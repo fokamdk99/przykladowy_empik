@@ -11,7 +11,7 @@ It is assumed that Docker is already installed on a development machine and Dock
 
  It is required to download and run Docker daemon in order to run Docker commands inside Jenkins container:
 ```
-docker run --name jenkins-empik --rm --detach --network jenkins --env DOCKER_HOST=tcp://docker:2376 --env DOCKER_CERT_PATH=/certs/client --env DOCKER_TLS_VERIFY=1 --volume jenkins-data:/var/jenkins_home --volume jenkins-docker-certs:/certs/client:ro --volume "%HOMEDRIVE%%HOMEPATH%":/home --publish 8080:8080 --publish 50000:50000 myjenkins-empik:1.1
+docker run --name jenkins-docker --rm --detach --privileged --network jenkins --network-alias docker --env DOCKER_TLS_CERTDIR=/certs --volume jenkins-docker-certs:/certs/client --volume jenkins-data:/var/jenkins_home docker:dind
 ```
 
 In the next step run a customised version of Jenkins Docker image. To do so, create Dockerfile with the following content:
@@ -208,7 +208,7 @@ Jenkinsfile has been divided into two separate steps. First step builds the imag
 ___
 
 # Linux
-Follow these instructions if you work on Linux Ubuntu distribution.
+Follow these instructions if you work on Linux Ubuntu.
 
 ## Stage 2
 Download Jenkins and run as a docker image on your local machine. Write step by step how to do it.
@@ -217,7 +217,7 @@ It is assumed that Docker is already installed on a development machine and Dock
 
  It is required to download and run Docker daemon in order to run Docker commands inside Jenkins container:
 ```
-docker run --name jenkins-empik --rm --detach --network jenkins --env DOCKER_HOST=tcp://docker:2376 --env DOCKER_CERT_PATH=/certs/client --env DOCKER_TLS_VERIFY=1 --volume jenkins-data:/var/jenkins_home --volume jenkins-docker-certs:/certs/client:ro --volume "%HOMEDRIVE%%HOMEPATH%":/home --publish 8080:8080 --publish 50000:50000 myjenkins-empik:1.1
+docker run --name jenkins-docker --rm --detach --privileged --network jenkins --network-alias docker --env DOCKER_TLS_CERTDIR=/certs --volume jenkins-docker-certs:/certs/client --volume jenkins-data:/var/jenkins_home --publish 3000:3000 --publish 2376:2376 docker:dind --storage-driver overlay2 
 ```
 
 In the next step run a customised version of Jenkins Docker image. To do so, create Dockerfile with the following content:
@@ -244,7 +244,7 @@ docker build -t myjenkins-empik:1.1 .
 
 Finally, run the image with the following ``` docker run ``` command:
 ```
-docker run --name jenkins-empik --rm --detach --network jenkins --env DOCKER_HOST=tcp://docker:2376 --env DOCKER_CERT_PATH=/certs/client --env DOCKER_TLS_VERIFY=1 --volume jenkins-data:/var/jenkins_home --volume jenkins-docker-certs:/certs/client:ro --volume "%HOMEDRIVE%%HOMEPATH%":/home --publish 8080:8080 --publish 50000:50000 myjenkins-empik:1.1
+docker run --name jenkins-empik --rm --detach --network jenkins --env DOCKER_HOST=tcp://docker:2376 --env DOCKER_CERT_PATH=/certs/client --env DOCKER_TLS_VERIFY=1 --volume jenkins-data:/var/jenkins_home --volume jenkins-docker-certs:/certs/client:ro --volume "$HOME":/home --publish 8080:8080 --publish 50000:50000 myjenkins-empik:1.1
 ```
 
 Before accessing Jenkins, there a few steps that are necessary in order to proceed further:
@@ -412,5 +412,3 @@ pipeline {
 Jenkinsfile has been divided into two separate steps. First step builds the image of your application, while the other pushes the result to a remote Docker Hub repository.
 
 ___
-
-
