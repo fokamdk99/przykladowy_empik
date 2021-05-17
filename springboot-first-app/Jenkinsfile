@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+
+    tools {
+        maven "maven-3.8.1"
+    }
+    options {
+        skipStagesAfterUnstable()
+    }
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn -f springboot-first-app/pom.xml clean package'
+            }
+        }
+        stage('Test')
+        {
+            steps{
+                sh 'mvn -f springboot-first-app/pom.xml test'
+            }
+        }
+        stage('Deliver') { 
+            steps {
+                sh "chmod +x -R ${env.WORKSPACE}"
+                sh 'springboot-first-app/jenkins/scripts/deliver.sh'
+            }
+        }
+    }
+}
