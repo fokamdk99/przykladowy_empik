@@ -202,6 +202,7 @@ pipeline {
     }
 }
 ```
+Remember to replace <your_account_name> with the actual name of your Docker Hub account.
 
 Jenkinsfile has been divided into two separate steps. First step builds the image of your application, while the other pushes the result to a remote Docker Hub repository.
 
@@ -408,6 +409,8 @@ pipeline {
     }
 }
 ```
+
+Remember to replace <your_account_name> with the actual name of your Docker Hub account.
 
 Jenkinsfile has been divided into two separate steps. First step builds the image of your application, while the other pushes the result to a remote Docker Hub repository.
 
